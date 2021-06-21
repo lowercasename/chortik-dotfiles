@@ -1,0 +1,33 @@
+# make sxhkd reload its configuration files:
+super + Escape
+    pkill -USR1 -x sxhkd
+
+XF86AudioRaiseVolume
+    amixer -q sset 'Master' 5%+
+
+XF86AudioLowerVolume
+    amixer -q sset 'Master' 5%-
+
+XF86AudioMute
+    amixer -q sset 'Master' toggle
+
+XF86AudioMicMute
+   amixer -q set 'Capture' toggle
+
+XF86MonBrightnessUp
+    bash $HOME/bin/brightness.sh up
+
+XF86MonBrightnessDown
+    bash $HOME/bin/brightness.sh down
+
+# Screenshots
+# Without the sleep scrot crashes with:
+# giblib error: couldn't grab keyboard:Resource temporarily unavailable
+Print
+    sleep 0.2; \
+    scrot 'Screenshot-%F_%H-%M-%S.png' -s
+
+ctrl + Print
+    sleep 0.2; \
+    scrot 'Screenshot-%F_%H-%M-%S.png'
+
