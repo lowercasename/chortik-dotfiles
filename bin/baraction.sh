@@ -4,7 +4,7 @@
 SLEEP_SEC=5  # set bar_delay = 5 in /etc/spectrwm.conf
 
 function Volume() {
-    echo "Volume +@fg=4;$(awk -F"[][]" '/dB/ { print $2 }' <(amixer sget Master))+@fg=2;"
+    echo "V +@fg=4;$(awk -F"[][]" '/dB/ { print $2 }' <(amixer sget Master))+@fg=2;"
 }
 
 function Battery() {
@@ -16,9 +16,9 @@ function Battery() {
 	if [ $battery_status != "Discharging" ]
 	then
 		icon=""
-		text_prefix='Charging'
+		text_prefix='AC'
 	else
-	    text_prefix='Battery'
+	    text_prefix='B'
 	    if [ $percentage -ge "95" ]; then
 		icon=''
 	    elif [ $percentage -ge "75" ]; then
@@ -39,8 +39,14 @@ function Battery() {
 	fi
 }	
 
+WiFi() {
+	ssid=$(nmcli -t -f active,ssid dev wifi | egrep '^yes' | cut -d\: -f2)
+        if [ -z $ssid ]; then ssid="None"; fi
+	echo "W +@fg=4;$ssid+@fg=2;"
+}
+
 #loops forever outputting a line every SLEEP_SEC secs
 while :; do
-	echo "$(Volume) | $(Battery)"
-        sleep $SLEEP_SEC
+    echo "//// $(WiFi) // $(Volume) // $(Battery)"
+    sleep $SLEEP_SEC
 done
